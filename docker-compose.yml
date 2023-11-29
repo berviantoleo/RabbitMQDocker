@@ -1,0 +1,27 @@
+services:
+  consumer:
+    restart: always
+    image: node-consumer
+    build: ./consumer
+    networks:
+      - dev
+    environment:
+      - AMQP_URL=amqp://rabbitmq
+  publisher:
+    image: publisher-consumer
+    restart: always
+    build: ./publisher
+    networks:
+      - dev
+    environment:
+      - AMQP_URL=amqp://rabbitmq
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    networks:
+      - dev
+    restart: always
+
+networks:
+  dev:
+    driver: bridge
+  
